@@ -46,10 +46,19 @@ Devvit.addSchedulerJob({
         text: commentText,
       });
 
-      context.ui.showToast(`Anonymous Comment Successfully Posted: ${commentText}`);
+      // Send a modmail with the comment details
+      const user = await context.reddit.getUserById(userId);
+      const modMailText = `User ${user.username} posted an anonymous comment: ${commentText} on post: ${postId}. Link: ${comment.url}`;
+
+      // Create a modmail conversation
+      const { conversation } = await context.reddit.modMail.createConversation({
+        subredditName: 'AnonSnoo',
+        subject: 'New Anonymous Comment',
+        body: modMailText,
+        to: null, // for internal moderator discussion
+      });
     } catch (error) {
       console.error('Error posting anonymous comment:', error);
-      context.ui.showToast(`Error posting anonymous comment`);
     }
   },
 });
@@ -65,13 +74,23 @@ Devvit.addSchedulerJob({
         text: replyText,
       });
 
-      context.ui.showToast(`Anonymous Reply Successfully Posted: ${replyText}`);
+      // Send a modmail with the reply details
+      const user = await context.reddit.getUserById(userId);
+      const modMailText = `User ${user.username} posted an anonymous reply: ${replyText} on comment: ${commentId}. Link: ${reply.url}`;
+
+      // Create a modmail conversation
+      const { conversation } = await context.reddit.modMail.createConversation({
+        subredditName: 'AnonSnoo',
+        subject: 'New Anonymous Reply',
+        body: modMailText,
+        to: null, // for internal moderator discussion
+      });
     } catch (error) {
       console.error('Error posting anonymous reply:', error);
-      context.ui.showToast(`Error posting anonymous reply`);
     }
   },
 });
+
 
 Devvit.addSchedulerJob({
   name: ANON_POST_JOB,
@@ -83,6 +102,18 @@ Devvit.addSchedulerJob({
         subredditName: 'AnonSnoo',
         title: title,
         text: text,
+      });
+
+      // Send a modmail with the post details
+      const user = await context.reddit.getUserById(userId);
+      const modMailText = `User ${user.username} posted an anonymous post: ${title}. Link: ${post.url}`;
+
+      // Create a modmail conversation
+      const { conversation } = await context.reddit.modMail.createConversation({
+        subredditName: 'AnonSnoo',
+        subject: 'New Anonymous Post',
+        body: modMailText,
+        to: null, // for internal moderator discussion
       });
     } catch (error) {
       console.error('Error posting anonymous post:', error);
@@ -139,7 +170,7 @@ const anonymousCommentFormTwo = Devvit.createForm(
     return {
       fields: [
         {
-          name: 'commentText',
+          name: 'replyText',
           label: 'Comment Text',
           type: 'string',
         },
@@ -150,7 +181,7 @@ const anonymousCommentFormTwo = Devvit.createForm(
     };
   },
   async ({ values }, context) => {
-    const commentText = values['commentText'];
+    const replyText = values['replyText'];
     const commentId = context.commentId ?? '';
     const postId = context.postId ?? '';
 
@@ -161,17 +192,17 @@ const anonymousCommentFormTwo = Devvit.createForm(
     }
 
     try {
-      console.log('Attempting to post comment:', commentText, 'on post:', postId);
+      console.log('Attempting to post comment:', replyText, 'on post:', postId);
       const comment = await context.reddit.submitComment({
         id: postId,
-        text: commentText,
+        text: replyText,
       });
 
       console.log('Comment posted:', comment);
-      context.ui.showToast(`Anonymous Comment Successfully Posted: ${commentText}`);
+      context.ui.showToast(`Anonymous Comment Successfully Posted: ${replyText}`);
     } catch (error) {
       console.error('Error posting anonymous comment:', error);
-      context.ui.showToast(`Error posting anonymous comment`);
+    //  context.ui.showToast(`Error posting anonymous comment`);
     }
 
     try {
@@ -180,15 +211,15 @@ const anonymousCommentFormTwo = Devvit.createForm(
         data: {
           userId: context.userId,
           commentId: commentId,
-          replyText: commentText,
+          replyText: replyText,
         },
         runAt: new Date(Date.now() + 200),
       });
 
-      context.ui.showToast(`Anonymous reply posted successfully: ${commentText}`);
+      context.ui.showToast(`Anonymous reply posted successfully: ${replyText}`);
     } catch (error) {
-      console.error('Error initiating anonymous reply job:', error);
-      context.ui.showToast('Error initiating anonymous reply job');
+    console.error('Error initiating anonymous reply job:', error);
+    //  context.ui.showToast('Error initiating anonymous reply job');
     }
   }
 );
@@ -237,3 +268,5 @@ const anonymousPostForm = Devvit.createForm(
   }
 );
 export default Devvit;
+
+//.
