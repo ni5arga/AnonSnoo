@@ -23,13 +23,13 @@ AnonSnoo is an application developed with Devvit, Reddit's Developer Platform, t
 
 Users can anonymously comment on both posts and comments, preserving their privacy.
 
-![Post Anon Comment](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-gq3gca15osnc1.png?width=423&format=png&auto=webp&s=7f378d4e5917e63bcfbfd9d02a5891532055330a)
+![Post Anon Comment](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-nrrbdvk2jtnc1.png?width=888&format=png&auto=webp&s=44579062dd1bfb8a7f664e3c93f99e464479ac8f)
 
 ### Create Posts Anonymously
 
 Users can create new anonymous posts within a specified subreddit, contributing to discussions without revealing their identity.
 
-![Create Anon Posts](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-7081w4bdosnc1.png?width=410&format=png&auto=webp&s=299a1a2b94cf49492b69f81d50ab2e2f63d9da74)
+![Create Anon Posts](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-nk7h1oqzitnc1.png?width=423&format=png&auto=webp&s=90ff073298767173829bdfaae239638975a79621)
 
 
 
@@ -37,7 +37,7 @@ Users can create new anonymous posts within a specified subreddit, contributing 
 
 Users can anonymously reply to comments, fostering open communication while maintaining anonymity.
 
-![Create Anon Comments](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-4nhql0v6osnc1.png?width=888&format=png&auto=webp&s=f8b934816289760d2cc492aa67cd78fe4364b880)
+![Create Anon Comments](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-920h6dj5jtnc1.png?width=410&format=png&auto=webp&s=0ff31d1703568a60e012684c2c773d1691b9d1b9)
 
 ## How to Use AnonSnoo
 
