@@ -1,4 +1,4 @@
-import { Devvit } from '@devvit/public-api';
+import { Devvit, SettingsScope } from '@devvit/public-api';
 
 const ANON_COMMENT_JOB = 'anoncommentjob';
 const ANON_REPLY_JOB = 'anonreplyjob';
@@ -8,13 +8,13 @@ Devvit.configure({
   redditAPI: true,
 });
 
-async function checkIfBanned(context) {
+async function checkIfBanned(context: any) {
   const currentSubreddit = await context.reddit.getCurrentSubreddit();
   const allBannedUsers = await context.reddit.getBannedUsers({
     subredditName: currentSubreddit.name,
   }).all();
 
-  const isBanned = allBannedUsers.find((user) => user.id === context.userId);
+  const isBanned = allBannedUsers.find((user: any) => user.id === context.userId);
 
   if (isBanned) {
     context.ui.showToast('You are banned.');
@@ -24,11 +24,63 @@ async function checkIfBanned(context) {
   return false;
 }
 
+export enum Setting {
+  AllowAnonPosts = 'allow-anon-posts',
+  AllowAnonComments = 'allow-anon-comments',
+  AllowAnonCommentReplies = 'allow-anon-comment-replies',
+}
+
+Devvit.addSettings([
+  {
+    type: 'boolean',
+    name: Setting.AllowAnonPosts,
+    label: 'Allow anonymous posts',
+    defaultValue: true,
+  },
+  {
+    type: 'boolean',
+    name: Setting.AllowAnonComments,
+    label: 'Allow anonymous comments',
+    defaultValue: true,
+  },
+  {
+    type: 'boolean',
+    name: Setting.AllowAnonCommentReplies,
+    label: 'Allow anonymous comment replies',
+    defaultValue: true,
+  },
+]);
+
+Devvit.addMenuItem({
+  label: 'Post Anon Post',
+  location: 'subreddit',
+  onPress: async (event, context) => {
+    const allowAnonPosts = await context.settings.get(Setting.AllowAnonPosts);
+    if (!allowAnonPosts) {
+      context.ui.showToast({
+        text: 'Anonymous posts are currently disabled.',
+        appearance: 'neutral',
+      });
+      return;
+    }
+    if (await checkIfBanned(context)) return;
+    context.ui.showForm(anonymousPostForm);
+  },
+});
+
 Devvit.addMenuItem({
   label: 'Post Anon Comment',
   location: 'post',
   onPress: async (event, context) => {
-    if (await checkIfBanned(context)) return; // check if user is banned
+    const allowAnonComments = await context.settings.get(Setting.AllowAnonComments);
+    if (!allowAnonComments) {
+      context.ui.showToast({
+        text: 'Anonymous comments are currently disabled.',
+        appearance: 'neutral',
+      });
+      return;
+    }
+    if (await checkIfBanned(context)) return;
 
     const postId = event.targetId;
     context.ui.showForm(anonymousCommentFormOne, { postId });
@@ -36,25 +88,23 @@ Devvit.addMenuItem({
 });
 
 Devvit.addMenuItem({
-  label: 'Post Anon Post',
-  location: 'subreddit',
-  onPress: async (event, context) => {
-    if (await checkIfBanned(context)) return; // check if user is banned
-    context.ui.showForm(anonymousPostForm);
-  },
-});
-
-Devvit.addMenuItem({
   label: 'Post Anon Comment',
   location: 'comment',
   onPress: async (event, context) => {
-    if (await checkIfBanned(context)) return; // check if user is banned
+    const allowAnonCommentReplies = await context.settings.get(Setting.AllowAnonCommentReplies);
+    if (!allowAnonCommentReplies) {
+      context.ui.showToast({
+        text: 'Anonymous comment replies are currently disabled.',
+        appearance: 'neutral',
+      });
+      return;
+    }
+    if (await checkIfBanned(context)) return;
 
     const commentId = event.targetId;
     context.ui.showForm(anonymousCommentFormTwo, { commentId });
   },
 });
-
 
 Devvit.addSchedulerJob({
   name: ANON_COMMENT_JOB,
@@ -290,4 +340,4 @@ const anonymousPostForm = Devvit.createForm(
 );
 export default Devvit;
 
-// i need more coffee
+// I need more coffee.
