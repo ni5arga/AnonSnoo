@@ -114,6 +114,7 @@ Devvit.addMenuItem({
   },
 });
 
+
 Devvit.addMenuItem({
   label: 'Post Anon Comment',
   location: 'comment',
@@ -135,6 +136,33 @@ Devvit.addMenuItem({
 });
 
 // ...
+
+Devvit.addSchedulerJob({
+  name: ANON_COMMENT_JOB,
+  onRun: async (event, context) => {
+    const { userId, postId, commentText } = event.data!;
+
+    try {
+      const comment = await context.reddit.submitComment({
+        id: postId,
+        text: commentText,
+      });
+
+      // send modmail
+      const user = await context.reddit.getUserById(userId);
+      const modMailText = `User ${user.username} posted an anonymous comment: ${commentText} on post: ${postId}. Link: ${comment.url}`;
+      const currentSubreddit = await context.reddit.getCurrentSubreddit();
+      const { conversation } = await context.reddit.modMail.createConversation({
+        subredditName: currentSubreddit.name,
+        subject: 'New Anonymous Comment',
+        body: modMailText,
+        to: null, // for internal moderator discussion
+      });
+    } catch (error) {
+      console.error('Error posting anonymous comment:', error);
+    }
+  },
+});
 
 Devvit.addSchedulerJob({
   name: ANON_REPLY_JOB,
