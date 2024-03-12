@@ -2,7 +2,7 @@
 
 AnonSnoo is an application developed with Devvit, Reddit's Developer Platform, to empower users to engage in subreddit discussions while maintaining complete anonymity. Whether posting, commenting, or replying to comments, AnonSnoo ensures user privacy by concealing usernames.
 
-**AnonSnoo currently only works in [/r/AnonSnoo](https://reddit.com/r/anonsnoo), read [this post](https://www.reddit.com/r/AnonSnoo/comments/1bcizmd/introducing_anonsnoo_post_comment_without/).**
+**AnonSnoo currently live at [/r/AnonSnoo](https://reddit.com/r/anonsnoo), read [this post](https://www.reddit.com/r/AnonSnoo/comments/1bcizmd/introducing_anonsnoo_post_comment_without/).**
 
 **You can test it & play with it in [/r/AnonSnoo](https://reddit.com/r/anonsnoo).**
 
@@ -56,4 +56,6 @@ Open the three-dot menu next to comments and click on "Post Anon Comment."
 ## Moderation & Logging
 
 For transparency and moderation purposes, every comment & post passing through the bot is logged in modmail. It gets stored in the modmail of the subreddit where the user has used AnonSnoo to interact. Admins & Moderators can still see who is posting or commenting what. Users who are banned from the subreddit user is trying to use AnonSnoo, won't be able to use it - anyone in the banned userlist of a subreddit won't be able to use AnonSnoo there.
+
+You can also disable creating new posts, new comments or new comment replies from the app settings page.
 
