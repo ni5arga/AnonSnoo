@@ -20,13 +20,15 @@ Users can anonymously comment on both posts and comments, preserving their priva
 
 Users can create new anonymous posts within a specified subreddit, contributing to discussions without revealing their identity.
 
-![Create Anon Post](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-4nhql0v6osnc1.png?width=888&format=png&auto=webp&s=f8b934816289760d2cc492aa67cd78fe4364b880)
+![Create Anon Posts](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-7081w4bdosnc1.png?width=410&format=png&auto=webp&s=299a1a2b94cf49492b69f81d50ab2e2f63d9da74)
+
+
 
 ### Reply To Comments Anonymously
 
 Users can anonymously reply to comments, fostering open communication while maintaining anonymity.
 
-![Reply To Comments](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-7081w4bdosnc1.png?width=410&format=png&auto=webp&s=299a1a2b94cf49492b69f81d50ab2e2f63d9da74)
+![Create Anon Comments](https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-4nhql0v6osnc1.png?width=888&format=png&auto=webp&s=f8b934816289760d2cc492aa67cd78fe4364b880)
 
 ## How to Use AnonSnoo
 
