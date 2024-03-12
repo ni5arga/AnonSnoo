@@ -8,21 +8,39 @@ Devvit.configure({
   redditAPI: true,
 });
 
+async function checkIfBanned(context) {
+  const currentSubreddit = await context.reddit.getCurrentSubreddit();
+  const allBannedUsers = await context.reddit.getBannedUsers({
+    subredditName: currentSubreddit.name,
+  }).all();
+
+  const isBanned = allBannedUsers.find((user) => user.id === context.userId);
+
+  if (isBanned) {
+    context.ui.showToast('You are banned, please modmail /r/AnonSnoo to appeal.');
+    return true;
+  }
+
+  return false;
+}
+
 Devvit.addMenuItem({
   label: 'Post Anon Comment',
   location: 'post',
   onPress: async (event, context) => {
+    if (await checkIfBanned(context)) return; // check if user is banned
+
     const postId = event.targetId;
     context.ui.showForm(anonymousCommentFormOne, { postId });
   },
 });
 
 Devvit.addMenuItem({
-  label: 'Create Anon Post',
+  label: 'Post Anon Post',
   location: 'subreddit',
   onPress: async (event, context) => {
-    const postId = event.targetId;
-    context.ui.showForm(anonymousPostForm, { postId });
+    if (await checkIfBanned(context)) return; // check if user is banned
+    context.ui.showForm(anonymousPostForm);
   },
 });
 
@@ -30,10 +48,13 @@ Devvit.addMenuItem({
   label: 'Post Anon Comment',
   location: 'comment',
   onPress: async (event, context) => {
+    if (await checkIfBanned(context)) return; // check if user is banned
+
     const commentId = event.targetId;
     context.ui.showForm(anonymousCommentFormTwo, { commentId });
   },
 });
+
 
 Devvit.addSchedulerJob({
   name: ANON_COMMENT_JOB,
@@ -269,4 +290,4 @@ const anonymousPostForm = Devvit.createForm(
 );
 export default Devvit;
 
-//.
+// i need more coffee.
