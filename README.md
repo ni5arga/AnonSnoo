@@ -55,5 +55,5 @@ Open the three-dot menu next to comments and click on "Post Anon Comment."
 
 ## Moderation & Logging
 
-For transparency and moderation purposes, every comment & post passing through the bot is logged in modmail. It gets stored in the modmail of the subreddit where the user has used AnonSnoo to interact. Admins & Moderators can still see who is posting or commenting what.
+For transparency and moderation purposes, every comment & post passing through the bot is logged in modmail. It gets stored in the modmail of the subreddit where the user has used AnonSnoo to interact. Admins & Moderators can still see who is posting or commenting what. Users who are banned from the subreddit user is trying to use AnonSnoo won't be able to use it - anyone in the banned userlist of a subreddit won't be able to use AnonSnoo there.
 
