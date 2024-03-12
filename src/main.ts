@@ -17,7 +17,7 @@ async function checkIfBanned(context) {
   const isBanned = allBannedUsers.find((user) => user.id === context.userId);
 
   if (isBanned) {
-    context.ui.showToast('You are banned, please modmail /r/AnonSnoo to appeal.');
+    context.ui.showToast('You are banned.');
     return true;
   }
 
@@ -67,13 +67,12 @@ Devvit.addSchedulerJob({
         text: commentText,
       });
 
-      // Send a modmail with the comment details
+      // send modmail
       const user = await context.reddit.getUserById(userId);
       const modMailText = `User ${user.username} posted an anonymous comment: ${commentText} on post: ${postId}. Link: ${comment.url}`;
-
-      // Create a modmail conversation
+      const currentSubreddit = await context.reddit.getCurrentSubreddit();
       const { conversation } = await context.reddit.modMail.createConversation({
-        subredditName: 'AnonSnoo',
+        subredditName: currentSubreddit.name,
         subject: 'New Anonymous Comment',
         body: modMailText,
         to: null, // for internal moderator discussion
@@ -95,16 +94,15 @@ Devvit.addSchedulerJob({
         text: replyText,
       });
 
-      // Send a modmail with the reply details
+      // send modmail
       const user = await context.reddit.getUserById(userId);
       const modMailText = `User ${user.username} posted an anonymous reply: ${replyText} on comment: ${commentId}. Link: ${reply.url}`;
-
-      // Create a modmail conversation
+      const currentSubreddit = await context.reddit.getCurrentSubreddit();
       const { conversation } = await context.reddit.modMail.createConversation({
-        subredditName: 'AnonSnoo',
+        subredditName: currentSubreddit.name,
         subject: 'New Anonymous Reply',
         body: modMailText,
-        to: null, // for internal moderator discussion
+        to: null,
       });
     } catch (error) {
       console.error('Error posting anonymous reply:', error);
@@ -117,19 +115,18 @@ Devvit.addSchedulerJob({
   name: ANON_POST_JOB,
   onRun: async (event, context) => {
     const { userId, title, text } = event.data!;
-
+    const currentSubreddit = await context.reddit.getCurrentSubreddit();
+    
     try {
       const post = await context.reddit.submitPost({
-        subredditName: 'AnonSnoo',
+        subredditName: currentSubreddit.name,
         title: title,
         text: text,
       });
 
-      // Send a modmail with the post details
+      // send a modmail
       const user = await context.reddit.getUserById(userId);
       const modMailText = `User ${user.username} posted an anonymous post: ${title}. Link: ${post.url}`;
-
-      // Create a modmail conversation
       const { conversation } = await context.reddit.modMail.createConversation({
         subredditName: 'AnonSnoo',
         subject: 'New Anonymous Post',
@@ -175,7 +172,7 @@ const anonymousCommentFormOne = Devvit.createForm(
           postId: postId,
           commentText: commentText,
         },
-        runAt: new Date(Date.now() + 200),
+        runAt: new Date(Date.now() + 1),
       });
 
       context.ui.showToast(`Anonymous comment posted successfully: ${commentText}`);
@@ -234,7 +231,7 @@ const anonymousCommentFormTwo = Devvit.createForm(
           commentId: commentId,
           replyText: replyText,
         },
-        runAt: new Date(Date.now() + 200),
+        runAt: new Date(Date.now() + 1),
       });
 
       context.ui.showToast(`Anonymous reply posted successfully: ${replyText}`);
@@ -278,7 +275,7 @@ const anonymousPostForm = Devvit.createForm(
           title: title,
           text: text,
         },
-        runAt: new Date(Date.now() + 200),
+        runAt: new Date(Date.now() + 1),
       });
 
       context.ui.showToast(`Anonymous post created successfully: ${title}`);
@@ -290,4 +287,4 @@ const anonymousPostForm = Devvit.createForm(
 );
 export default Devvit;
 
-// i need more coffee.
+// i need more coffee
