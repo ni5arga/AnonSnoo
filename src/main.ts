@@ -69,8 +69,8 @@ Devvit.addSettings([
   {
     type: 'string',
     name: Setting.Blacklist,
-    label: 'Blacklisted usernames',
-    defaultValue: 'username1, username2',
+    label: 'Blacklisted usernames (Case-Sensitive & Seperate Usernames By Commas)',
+    defaultValue: 'Username1, Username2',
    // scope: SettingScope.App,
   },
 ]);
