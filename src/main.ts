@@ -127,8 +127,9 @@ Devvit.addSchedulerJob({
       // send a modmail
       const user = await context.reddit.getUserById(userId);
       const modMailText = `User ${user.username} posted an anonymous post: ${title}. Link: ${post.url}`;
+      
       const { conversation } = await context.reddit.modMail.createConversation({
-        subredditName: 'AnonSnoo',
+        subredditName: currentSubreddit.name,
         subject: 'New Anonymous Post',
         body: modMailText,
         to: null, // for internal moderator discussion
@@ -265,13 +266,15 @@ const anonymousPostForm = Devvit.createForm(
   async ({ values }, context) => {
     const title = values['title'];
     const text = values['text'];
+    const currentSubreddit = await context.reddit.getCurrentSubreddit();
+
 
     try {
       await context.scheduler.runJob({
         name: ANON_POST_JOB,
         data: {
           userId: context.userId,
-          subreddit: 'AnonSnoo',
+          subreddit: currentSubreddit.name,
           title: title,
           text: text,
         },
