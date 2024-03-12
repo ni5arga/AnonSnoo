@@ -8,12 +8,15 @@ Devvit.configure({
   redditAPI: true,
 });
 
-async function checkIfBanned(context: any) {
+
+
+async function checkIfBannedOrBlacklisted(context: any) {
   const currentSubreddit = await context.reddit.getCurrentSubreddit();
+  
+  // Check if the user is banned
   const allBannedUsers = await context.reddit.getBannedUsers({
     subredditName: currentSubreddit.name,
   }).all();
-
   const isBanned = allBannedUsers.find((user: any) => user.id === context.userId);
 
   if (isBanned) {
@@ -21,13 +24,24 @@ async function checkIfBanned(context: any) {
     return true;
   }
 
+  // Check if the user is blacklisted
+  const blacklistSetting = await context.settings.get('blacklist');
+  const blacklist = typeof blacklistSetting === 'string' ? blacklistSetting.split(',').map((username) => username.trim()) : [];
+  const currentUser = await context.reddit.getCurrentUser();
+  if (blacklist.includes(currentUser?.username ?? '')) {
+    context.ui.showToast('You are blacklisted.');
+    return true;
+  }
+
   return false;
 }
+
 
 export enum Setting {
   AllowAnonPosts = 'allow-anon-posts',
   AllowAnonComments = 'allow-anon-comments',
   AllowAnonCommentReplies = 'allow-anon-comment-replies',
+  Blacklist = 'blacklist',
 }
 
 Devvit.addSettings([
@@ -36,20 +50,31 @@ Devvit.addSettings([
     name: Setting.AllowAnonPosts,
     label: 'Allow anonymous posts',
     defaultValue: true,
+   // scope: SettingScope.App,
   },
   {
     type: 'boolean',
     name: Setting.AllowAnonComments,
     label: 'Allow anonymous comments',
     defaultValue: true,
+   // scope: SettingScope.App,
   },
   {
     type: 'boolean',
     name: Setting.AllowAnonCommentReplies,
     label: 'Allow anonymous comment replies',
     defaultValue: true,
+   // scope: SettingScope.App,
+  },
+  {
+    type: 'string',
+    name: Setting.Blacklist,
+    label: 'Blacklisted usernames',
+    defaultValue: 'username1, username2',
+   // scope: SettingScope.App,
   },
 ]);
+
 
 Devvit.addMenuItem({
   label: 'Post Anon Post',
@@ -63,7 +88,8 @@ Devvit.addMenuItem({
       });
       return;
     }
-    if (await checkIfBanned(context)) return;
+
+    if (await checkIfBannedOrBlacklisted(context)) return;
     context.ui.showForm(anonymousPostForm);
   },
 });
@@ -80,7 +106,8 @@ Devvit.addMenuItem({
       });
       return;
     }
-    if (await checkIfBanned(context)) return;
+
+    if (await checkIfBannedOrBlacklisted(context)) return;
 
     const postId = event.targetId;
     context.ui.showForm(anonymousCommentFormOne, { postId });
@@ -99,39 +126,15 @@ Devvit.addMenuItem({
       });
       return;
     }
-    if (await checkIfBanned(context)) return;
+
+    if (await checkIfBannedOrBlacklisted(context)) return;
 
     const commentId = event.targetId;
     context.ui.showForm(anonymousCommentFormTwo, { commentId });
   },
 });
 
-Devvit.addSchedulerJob({
-  name: ANON_COMMENT_JOB,
-  onRun: async (event, context) => {
-    const { userId, postId, commentText } = event.data!;
-
-    try {
-      const comment = await context.reddit.submitComment({
-        id: postId,
-        text: commentText,
-      });
-
-      // send modmail
-      const user = await context.reddit.getUserById(userId);
-      const modMailText = `User ${user.username} posted an anonymous comment: ${commentText} on post: ${postId}. Link: ${comment.url}`;
-      const currentSubreddit = await context.reddit.getCurrentSubreddit();
-      const { conversation } = await context.reddit.modMail.createConversation({
-        subredditName: currentSubreddit.name,
-        subject: 'New Anonymous Comment',
-        body: modMailText,
-        to: null, // for internal moderator discussion
-      });
-    } catch (error) {
-      console.error('Error posting anonymous comment:', error);
-    }
-  },
-});
+// ...
 
 Devvit.addSchedulerJob({
   name: ANON_REPLY_JOB,
@@ -340,4 +343,4 @@ const anonymousPostForm = Devvit.createForm(
 );
 export default Devvit;
 
-// I need more coffee.
+// I need more coffee
