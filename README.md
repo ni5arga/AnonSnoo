@@ -8,6 +8,13 @@ AnonSnoo is an application developed with Devvit, Reddit's Developer Platform, t
   <img src="https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-p4l1pp7aosnc1.png?width=256&format=png&auto=webp&s=b7ae476ba6a9de80596b5448d10745f6c2592036" width="256" alt="AnonSnoo">
 </p>
 
+## Demonstration
+
+<div align="center">
+  <img src="https://i.ibb.co/XVBpnYm/screen-capture-5.gif" alt="Video" width="75%">
+</div>
+
+
 ## Features
 
 ### Post Comments Anonymously
