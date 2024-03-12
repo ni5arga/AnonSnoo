@@ -59,3 +59,4 @@ For transparency and moderation purposes, every comment & post passing through t
 
 You can also disable creating new posts, new comments or new comment replies from the app settings page.
 
+You can restrict users from using the app by blacklisting them in settings instead of banning them as a whole.
