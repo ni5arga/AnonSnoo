@@ -7,7 +7,7 @@ AnonSnoo is an application developed with Devvit, Reddit's Developer Platform, t
 **You can test it & play with it in [/r/AnonSnoo](https://reddit.com/r/anonsnoo).**
 
 <p align="center">
-  <img src="https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-p4l1pp7aosnc1.png?width=256&format=png&auto=webp&s=b7ae476ba6a9de80596b5448d10745f6c2592036" width="256" alt="AnonSnoo">
+  <img src="https://preview.redd.it/introducing-anonsnoo-post-comment-without-revealing-your-v0-p4l1pp7aosnc1.png" width="256" alt="AnonSnoo">
 </p>
 
 ## Demonstration
