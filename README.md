@@ -2,7 +2,7 @@
 
 AnonSnoo is an application developed with Devvit, Reddit's Developer Platform, to empower users to engage in subreddit discussions while maintaining complete anonymity. Whether posting, commenting, or replying to comments, AnonSnoo ensures user privacy by concealing usernames.
 
-**AnonSnoo currently live at [/r/AnonSnoo](https://reddit.com/r/anonsnoo), read [this post](https://www.reddit.com/r/AnonSnoo/comments/1bcizmd/introducing_anonsnoo_post_comment_without/).**
+**AnonSnoo is currently live at [/r/AnonSnoo](https://reddit.com/r/anonsnoo), read [this post](https://www.reddit.com/r/AnonSnoo/comments/1bcizmd/introducing_anonsnoo_post_comment_without/).**
 
 **You can test it & play with it in [/r/AnonSnoo](https://reddit.com/r/anonsnoo).**
 
